@@ -1,0 +1,60 @@
+{% extends "QRCode/base.html" %}
+
+{% block title %}QRCode Generator{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1> Welcome to Atomic's QRCode Generator! </h1>
+    <hr class="mt-3">
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success mt-2">Generate QR Code</button>
+    </form>
+
+    <div class="mt-4">
+        {% if path %}
+    <div class="mt-4">
+        <h2>Generated QR Code:</h2>
+        <img src="media\{{ path }}" alt="QR Code" id="qr-code-image" class="img" style="width: 200px; height: 200px;">
+        
+        <div class="mt-3 mb-5">
+            <!-- Download Button -->
+            <a href="media\{{ path }}" download class="btn btn-warning">
+                <i class="fas fa-download"></i> Download QR Code
+            </a>
+            
+            <!-- Copy Button -->
+            <button onclick="copyQRCode()" class="btn btn-secondary">
+                <i class="fas fa-copy"></i> Copy QR Code
+            </button>
+        </div>
+    </div>
+
+    <script>
+
+        function copyQRCode() {
+            // Get the image element
+            const qrImage = document.getElementById('qr-code-image');
+            
+            // Create a temporary canvas
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = qrImage.naturalWidth;
+            canvas.height = qrImage.naturalHeight;
+            ctx.drawImage(qrImage, 0, 0);
+            
+            // Convert canvas to blob and copy to clipboard
+            canvas.toBlob(blob => {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item])
+                    .then(() => alert('QR Code copied to clipboard!'))
+                    .catch(err => alert('Failed to copy: ' + err));
+            });
+        }
+    </script>
+{% endif %}
+    </div>
+
+{% endblock content %}

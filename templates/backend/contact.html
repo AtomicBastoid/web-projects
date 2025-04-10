@@ -1,0 +1,21 @@
+{% extends "backend/base.html" %}
+
+{% block title %}Atomic's Contact Page{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Contact AtomicBastoid</h1>
+    <hr class="mt-3">
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success mt-2">Send Message</button>
+    </form>
+    {% if success %}
+        <div class="alert alert-success mt-2" role="alert">
+        Your message has been sent successfully!
+        </div>
+    {% endif %}
+    
+{% endblock content %}

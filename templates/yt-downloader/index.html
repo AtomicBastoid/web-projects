@@ -1,0 +1,15 @@
+{% extends "yt-downloader\base.html" %}
+
+{% block title %}YT Downloader{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1> Welcome to Atomic's YT Downloader</h1>
+<hr class="mt-3">
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success mt-2">Generate</button>
+</form>
+{% endblock content %}
