@@ -76,7 +76,9 @@
         <div class="sidenav">
             <div class="top">
                 <a href="/" id="link">Home</a>
-                <a href="/contact" id="link">Contact</a>
+                <a href='/posts' id='link'>Posts</a>
+                {% block top_links %}
+                {% endblock top_links %}
             </div>
 
             <div class="bottom">
@@ -87,8 +89,9 @@
                         <button id="logout-btn" type="submit">Logout</button>
                     </form>
                 {% else %}
-                <a href="/login" id="link">Sign In</a>
+                    <a href="/login" id="link">Sign In</a>
                 {% endif %}
+                <a href="/contact" id="link">Contact</a>
             </div>
         </div>
 

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap4",
     "yt_downloader.apps.YtDownloaderConfig",
+    "blog.apps.BlogConfig"
 ]
 
 MIDDLEWARE = [

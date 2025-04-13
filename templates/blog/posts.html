@@ -1,0 +1,29 @@
+{% extends "base_templates/base.html" %}
+
+{% block top_links %}
+    <a id='link' href="/posts/create">Create</a>
+{% endblock top_links %}
+
+{% block title %}Blog Site{% endblock title %}
+
+{% block content %}
+<h1 class="mb-0">Mind Dump, But Make It Cool 😎</h1>
+<p class="mb-0">Leave your mark by making a post: <a style="text-decoration:none;color:green;" href="/posts/create">here</a></p>
+<hr class="mt-1">
+{% for post in posts %}
+  <div class="card mt-2">
+    <div class="card-header"><strong>@{{ post.author.username }}</strong></div>
+    <div class="card-body d-flex flex-row justify-content-between">
+    <div>
+      <h5 class="card-title">{{post.title}}</h5>
+      <p>{{post.description}}</p>
+    </div>
+    </div>
+    <div class="card-footer text-muted">{{post.created_at}}</div>
+  </div> 
+{% empty %} 
+  <div class="text-center text-muted mt-3">
+    <h1>No posts yet :|</h1>
+  </div>
+{% endfor %}
+{% endblock content %}

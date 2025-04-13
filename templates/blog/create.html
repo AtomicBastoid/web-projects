@@ -1,0 +1,18 @@
+{% extends "base_templates/base.html" %}
+
+{% block top_links %}
+    <a id='link' href="/posts/create">Create</a>
+{% endblock top_links %}
+
+{% block title %}Create Posts{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>What’s on Your Mind?</h1>
+<hr class="mt-3">
+<form method="post">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button type='submit' class='btn btn-success mt-3'>Create</button>
+</form>
+{% endblock content %}
