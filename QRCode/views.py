@@ -1,9 +1,7 @@
 # Import necessary modules
 from django.shortcuts import render
 import qrcode
-from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.colormasks import SolidFillColorMask
-from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
+from django.contrib.auth.decorators import login_required
 import os
 from django.conf import settings
 
@@ -11,6 +9,7 @@ from django.conf import settings
 from .forms import GetUrlForm
 
 # Create your views here.
+@login_required
 def index(request):
     def hex_to_rgb(hex_code):
         """Converts hex color code to RGB tuple (e.g., '#FF5733' → (255, 87, 51))."""

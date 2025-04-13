@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration.apps.RegistrationConfig',
     'QRCode.apps.QrcodeConfig',
     'crispy_forms',
     "crispy_bootstrap4",
@@ -145,3 +146,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'keshwanieishal001@gmail.com'  # Your email
 EMAIL_HOST_PASSWORD = 'admin'  # Use an App Password (not your main password)
 DEFAULT_FROM_EMAIL = 'keshwanieishal001@gmail.com'  # Default "from" address
+
+"""
+Required logic for handling users.
+"""
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login'
+LOGIN_URL = '/login'

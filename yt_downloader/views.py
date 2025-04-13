@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from .forms import VideoForm
 from .functions import youtube_url_to_embed, download
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import re
 import yt_dlp
 import os
 
 # Create your views here.
+@login_required
 def index(request):
     if request.method == 'POST':
         form = VideoForm(request.POST)

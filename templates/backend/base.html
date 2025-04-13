@@ -20,12 +20,35 @@
                 padding-top: 20px;
             }
 
+            #username {
+                padding: 0px 8px 8px 8px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+            }
+
+            #logout-btn {
+                background-color:#111; /* dark background */
+                color: #818181;               /* subtle text color */
+                border: none;
+                padding: 0px 8px 8px 8px;
+                font-size: 25px;
+                cursor: pointer;
+                background: none; /* remove default button styling */
+            }
+              
+            #logout-btn:hover {
+                color: #f1f1f1;               /* text color on hover */
+            }
+
             #link {
                 padding: 0px 8px 8px 8px;
                 text-decoration: none;
                 font-size: 25px;
                 color: #818181;
                 display: block;
+                cursor: pointer;
             }
 
             #link:hover {
@@ -57,8 +80,15 @@
             </div>
 
             <div class="bottom">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <a id="username">Hello, {{user.username}}</a>
+                        <button id="logout-btn" type="submit">Logout</button>
+                    </form>
+                {% else %}
                 <a href="/login" id="link">Sign In</a>
-                <a href="/logout" id="link">Logout</a>
+                {% endif %}
             </div>
         </div>
 
