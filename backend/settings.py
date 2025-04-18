@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'gitignore/db.sqlite3',
     }
 }
 
@@ -148,10 +148,10 @@ EMAIL_HOST_USER = 'keshwanieishal001@gmail.com'  # Your email
 EMAIL_HOST_PASSWORD = 'admin'  # Use an App Password (not your main password)
 DEFAULT_FROM_EMAIL = 'keshwanieishal001@gmail.com'  # Default "from" address
 
+# User Settings
 """
 Required logic for handling users.
 """
-
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login'
 LOGIN_URL = '/login'
