@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     'registration.apps.RegistrationConfig',
     'QRCode.apps.QrcodeConfig',
     'crispy_forms',
+    'widget_tweaks',
     "crispy_bootstrap4",
     "yt_downloader.apps.YtDownloaderConfig",
-    "blog.apps.BlogConfig"
+    "blog.apps.BlogConfig",
+    "PingMeUp.apps.PingmeupConfig"
 ]
 
 MIDDLEWARE = [

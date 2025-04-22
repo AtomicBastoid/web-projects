@@ -30,7 +30,8 @@ urlpatterns = [
     path('yt_downloader/', include('yt_downloader.urls')),
     path('', include(auth_urls), name='auth'),
     path('', include('registration.urls'), name='user_handling'),
-    path('', include('blog.urls'), name='postsApp')
+    path('', include('blog.urls'), name='postsApp'),
+    path('', include('PingMeUp.urls'), name="PingMeUp")
 ]
 
 if settings.DEBUG:

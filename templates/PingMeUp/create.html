@@ -1,0 +1,95 @@
+{% extends "base_templates/base_2.html" %}
+
+{% comment "parameters" %}
+    "profile" : profile,
+    "socials" : socials,
+    "skills" : skills,
+    "projects" : projects
+{% endcomment %}
+
+{% block title %}Create your profile{% endblock title %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<h1 class="mt-3">Create Your Profile</h1>
+<hr class="mt-3">
+<form method="post">
+    <div id="profile-form">
+        <h2>About You...</h2>
+        {{ profile }}
+        <hr class="mt-3">
+    </div>
+
+    <div id="skill-form">
+        <div class="d-flex justify-content-between">
+            <h2>Add Skills</h2>
+            <button type="submit" id='add-skill' onclick="" style="background:none; border:none; cursor:pointer;" >
+                <i class="fa-solid fa-plus text text-primary"></i>
+            </button>
+        </div>    
+        {{ skills.managment_form}}
+        {% for form in skills %}
+            {{form}}
+        {% endfor %}
+        <hr class="mt-3">
+    </div>
+
+    <div id="project-form">
+        <div class="d-flex justify-content-between">
+            <h2>Add Project</h2>
+            <button type="submit" id='add-project' onclick="" style="background:none; border:none; cursor:pointer;" >
+                <i class="fa-solid fa-plus text text-primary"></i>
+            </button>
+        </div>
+        {{ projects.managment_form}}
+        {% for form in projects %}
+            {{form}}
+        {% endfor %}
+        <hr class="mt-3">
+    </div>
+
+    <div id="socials-form">
+        <div class="d-flex justify-content-between">
+            <h2>Add Socials</h2>
+            <button type="submit" id='add-socials' onclick="" style="background:none; border:none; cursor:pointer;" >
+                <i class="fa-solid fa-plus text text-primary"></i>
+            </button>
+        </div>
+        {{ socials.managment_form}}
+        {% for form in socials %}
+            {{form}}
+        {% endfor %}
+        <hr class="mt-3">
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+
+
+
+{# js for this page #}
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        // Getting All Buttons
+        const skill_add = document.getElementById("add-skill")
+        const project_add = document.getElementById("add-project")
+        const social_add = document.getElementById("add-socials")
+
+        // Getting All Form-divs
+        const skill_div = document.getElementById("skill-form")
+        const project_div = document.getElementById("project-form")
+        const social_div = document.getElementById("social-form")
+
+        // Getting Total Forms
+        const skill_tf = skill_div.querySelector("input$[name="-TOTAL_FORMS"]")
+        const project_tf = project_div.querySelector("input$[name="-TOTAL_FORMS"]")
+        const social_tf = social_div.querySelector("input$[name="-TOTAL_FORMS"]")
+
+        alert(skill_tf)
+    })
+</script>
+
+{% endblock content %}

@@ -3,6 +3,7 @@ django-crispy-forms
 crispy-bootstrap4
 qrcode
 pillow
-os
 yt_dlp
 date
+django-widget-tweaks
+django-extensions
