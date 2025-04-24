@@ -1,0 +1,56 @@
+{% include "base_templates/base_2.html" %}
+
+{% block style %}
+<style>
+    .tab{display:none;padding:20px;background:#eee}
+    .tab.active{display:block}
+</style>
+{% endblock style %}
+
+
+
+{% block content %}
+<div class="nav nav-tabs mt-3">
+  <button class="nav-link active me-1" data-tab="one">One</button>
+  <button class="nav-link me-1"        data-tab="two">Two</button>
+</div>
+
+<div id="tab-content">
+    <div id="one" class="tab active">
+        <form id="profile-form" data-url="{% url "PingMeUp:ajax_profile" %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="d-flex justify-content-between">
+                <h1>My Profile</h1>
+                <div class="d-flex" style="align-items:center;">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
+            <div>
+              {% for field in profile %}
+                {% if forloop.counter <= 3 %}
+                  {{field}}
+                  {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
+                {% else %}
+                  {{field}}
+                  {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
+                {% endif %}
+              
+              {% endfor %}
+            </div>
+        </form>
+    </div>
+    <div id="two" class="tab">{{skills}}</div>
+</div>
+
+<script>
+document.querySelectorAll('.nav-link').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  };
+});
+</script>
+{% endblock %}

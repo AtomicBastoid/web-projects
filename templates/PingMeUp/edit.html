@@ -1,0 +1,335 @@
+{% extends "base_templates/base_2.html" %}
+
+{% block title %}Edit Profile{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+<style>
+  .tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    cursor: pointer;
+    border: none;
+    background: #eee;
+    border-radius: 6px;
+  }
+  .tab-btn.active {
+    background-color: #3498db;
+    color: white;
+  }
+  .tab {
+    display: none; /* Hide inactive tabs */
+  }
+  div.tab.active {
+    display: block; /* Show the active tab */
+    background-color: #dee2e6;
+    padding: 20px 20px;
+    border-radius: 0px 0px 10px 10px;
+  }
+  .nav-link.me-1 {
+    background-color: #e9ecef;
+    color: black;
+  }
+  .nav-link.active.me-1 {
+    background-color: white;
+    color: black;
+  }
+  .nav-link:hover {
+    background-color: white;
+    color: #222;
+  }
+  .hidden {
+    display: none;
+  }
+  .first-three {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    flex-wrap: wrap;
+ }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div id="toast" class="alert d-flex align-items-center mt-2 p-2" role="alert">
+</div>
+
+<div class="nav nav-tabs mt-3">
+    <button class="nav-link active me-1" data-tab="profile">Profile</button>
+    <button class="nav-link me-1" data-tab="skills">Skills</button>
+    <button class="nav-link me-1" data-tab="projects">Projects</button>
+    <button class="nav-link me-1" data-tab="socials">Socials</button>
+</div>
+  
+<div id="tab-content">
+    <div id="profile" class="tab active">
+        <form id="profile-form" data-url="{% url "PingMeUp:ajax_profile" %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="d-flex justify-content-between">
+                <h1>My Profile</h1>
+                <div class="d-flex" style="align-items:center;">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
+            <div>
+              {{profile|crispy}}
+            </div>
+        </form>
+    </div>
+
+    <div id="skills" class="tab">
+      <form id="skills-form" data-url="{% url "PingMeUp:ajax_skills" %}" enctype="multipart/form-data">
+
+        <div class="d-flex justify-content-between">
+          <h1>My Skills</h1>
+          <div class="d-flex" style="align-items:center;">
+              <button type="button" class="btn btn-light me-2" onclick="add_skill()">Add Skill</button>
+              <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
+
+        <div id="skills-formset">
+          {{ skills.management_form }}
+          <div class="skill-form mb-2">
+            {% for skill in skills %}
+              {{skill|crispy}}
+              {% if forloop.counter|divisibleby:"1" %}
+              <hr>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        
+      </form>
+    </div>
+
+    <div id="projects" class="tab">
+      <form id="projects-form" data-url="{% url "PingMeUp:ajax_projects" %}" enctype="multipart/form-data">
+
+        <div class="d-flex justify-content-between">
+          <h1>My Projects</h1>
+          <div class="d-flex" style="align-items:center;">
+              <button type="button" class="btn btn-light me-2" onclick="add_project()">Add Project</button>
+              <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
+
+        <div id="projects-formset">
+          {{ projects.management_form }}
+          <div class="project-form mb-2">
+            {% for project in projects %}
+            {{project|crispy}}
+            {% if forloop.counter|divisibleby:"1" %}
+              <hr>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div id="socials" class="tab">
+      <form id="projects-form" data-url="{% url "PingMeUp:ajax_socials" %}" enctype="multipart/form-data">
+        
+        <div class="d-flex justify-content-between">
+          <h1>My Socials</h1>
+          <div class="d-flex" style="align-items:center;">
+              <button type="button" class="btn btn-light me-2" onclick="add_social()">Add Social</button>
+              <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
+
+        <div id="socials-formset">
+          {{ socials.management_form }}
+          <div id="social-form">
+            {% for social in socials %}
+              {{ social|crispy }}
+              {% if forloop.counter|divisibleby:"1" %}
+              <hr>
+              {% endif %}
+            {% endfor %}
+        </div>
+        
+      </form>
+    </div>
+
+    </div>
+</div>
+
+{# Hidden empty form template #}
+<div id="empty-skill-form" class="hidden">
+  {{ skills.empty_form|crispy }}
+</div>
+<div id="empty-project-form" class="hidden">
+  {{ projects.empty_form|crispy }}
+</div>
+<div id="empty-social-form" class="hidden">
+  {{ socials.empty_form|crispy }}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tabButtons = document.querySelectorAll(".nav-link[data-tab]")
+    const tabPanes = document.querySelectorAll(".tab")
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // Remove active from all buttons and panes
+        tabButtons.forEach((b) => b.classList.remove("active"))
+        tabPanes.forEach((pane) => pane.classList.remove("active"))
+        
+        // Add active to clicked button and related pane
+        const target = btn.dataset.tab
+        btn.classList.add("active")
+        document.getElementById(target).classList.add('active')
+      })
+    })
+  })
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // Getting All Form-divs
+    const skill_div = document.getElementById("skills-formset")
+    const project_div = document.getElementById("projects-formset")
+    const social_div = document.getElementById("socials-formset")
+
+    // Getting Total Forms
+    const skill_tf = document.getElementById("id_skills-TOTAL_FORMS")
+    const project_tf = document.getElementById('id_projects-TOTAL_FORMS')
+    const social_tf = document.getElementById('id_socials-TOTAL_FORMS')
+    
+    // Button OnClick Functions
+    window.add_skill = function () {
+      const formCount = parseInt(skill_tf.value)
+      const newFormHtml = document.getElementById("empty-skill-form").innerHTML.replace(/__prefix__/g, formCount)
+      const newDiv = document.createElement("div")
+      newDiv.classList.add("skill-form", "mb-2")
+      newDiv.innerHTML = newFormHtml
+      skill_div.appendChild(newDiv)
+      skill_tf.value = formCount + 1
+    }
+
+    window.add_project = function () {
+      const formCount = parseInt(project_tf.value);
+      const newFormHtml = document.getElementById("empty-project-form").innerHTML.replace(/__prefix__/g, formCount);
+      const newDiv = document.createElement("div");
+      newDiv.classList.add("project-form", "mb-2");
+      newDiv.innerHTML = newFormHtml;
+      project_div.appendChild(newDiv);
+      project_tf.value = formCount + 1;
+    };
+
+    window.add_social = function () {
+      const formCount = parseInt(social_tf.value);
+      const newFormHtml = document.getElementById("empty-social-form").innerHTML.replace(/__prefix__/g, formCount);
+      const newDiv = document.createElement("div");
+      newDiv.classList.add("social-form", "mb-2");
+      newDiv.innerHTML = newFormHtml;
+      social_div.appendChild(newDiv);
+      social_tf.value = formCount + 1;
+    };  
+  })
+</script>
+
+<script>
+  // --------------------Cookie Values--------------------------
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  // ---------------------Ajax Handler--------------------------
+  document.querySelectorAll("form[data-url]").forEach(form => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      const url = form.dataset.url
+      const btn = form.querySelector("button[type=submit]")
+      const data = new FormData(form)
+      btn.disabled = true
+      btn.textContent = "Saving..."
+
+      try {
+        const r = await fetch(url, {
+          method: "POST",
+          body: data,
+          headers: {"X-CSRFToken": csrftoken}
+        })
+        const json = await r.json()
+        if (json.ok) {
+          toast(json.msg || "Saved!")
+        } else {
+          showError(form, json.errors)
+        }
+      } catch(err) {
+        console.log(err)
+        toast("server error - try again", true)
+      } finally {
+        btn.disabled = false
+        btn.textContent = "Save"
+      }
+    })
+  })
+
+  // ---------------------Ajax Handler Helper Functions------------------
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
+  function toast(msg, error=false) {
+    const t = document.getElementById("toast")
+    const newDiv = document.createElement("div")
+    const icon = document.createElement("i")
+    const text = document.createElement("span")
+    const inner = document.createElement("div")
+    inner.classList.add("d-flex", "align-items-center", "gap-2")
+    if (error) {
+      t.classList.add("alert-danger")
+      icon.className = "fa-solid fa-circle-exclamation"
+    } else {
+      t.classList.add("alert-success")
+      icon.className = "fa-solid fa-circle-check"
+    }
+    text.textContent = msg
+    inner.appendChild(icon)
+    inner.appendChild(text)
+    t.appendChild(inner)
+
+    setTimeout(() => {
+      t.classList.remove("alert-danger", "alert-success")
+      t.innerHTML = ""
+    }, 3000);
+     
+  }
+
+  function showError(form, errors) {
+    form.querySelector(".field-error").forEach(e => e.remove())
+    for (const [field, msgs] of Object.entries(errors)) {
+      const input = form.querySelector(`[name*="${field}"]`)
+      if (input) {
+        const div = document.createElement('div')
+        div.className = "field-error text text-danger small"
+        newDiv.innerHTML = msg.join("<br>")
+        input.insertAdjacentElement("afterhand", div)
+      }
+    }
+  }
+</script>
+{% endblock content %}
+

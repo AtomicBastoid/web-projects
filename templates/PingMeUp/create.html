@@ -11,6 +11,12 @@
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 
+{% block style %}
+.hidden {
+    display:none;
+}
+{% endblock style %}
+
 {% block content %}
 <h1 class="mt-3">Create Your Profile</h1>
 <hr class="mt-3">
@@ -21,75 +27,119 @@
         <hr class="mt-3">
     </div>
 
-    <div id="skill-form">
-        <div class="d-flex justify-content-between">
-            <h2>Add Skills</h2>
-            <button type="submit" id='add-skill' onclick="" style="background:none; border:none; cursor:pointer;" >
-                <i class="fa-solid fa-plus text text-primary"></i>
-            </button>
-        </div>    
-        {{ skills.managment_form}}
-        {% for form in skills %}
-            {{form}}
-        {% endfor %}
+    <div id="skills-formset">
+        <div id="skill-form">
+            <div class="d-flex justify-content-between">
+                <h2>Add Skills</h2>
+                <button type="button" id='add-skill' onclick="add_skill()" style="background:none; border:none; cursor:pointer;" >
+                    <i class="fa-solid fa-plus text text-primary"></i>
+                </button>
+            </div>    
+            {{ skills.management_form }}
+            {% for form in skills %}
+                {{form}}
+            {% endfor %}
+        </div>
         <hr class="mt-3">
     </div>
 
-    <div id="project-form">
-        <div class="d-flex justify-content-between">
-            <h2>Add Project</h2>
-            <button type="submit" id='add-project' onclick="" style="background:none; border:none; cursor:pointer;" >
-                <i class="fa-solid fa-plus text text-primary"></i>
-            </button>
+    <div id="projects-formset">
+        <div class="project-form">
+            <div class="d-flex justify-content-between">
+                <h2>Add Project</h2>
+                <button type="button" id='add-project' onclick="add_project()" style="background:none; border:none; cursor:pointer;" >
+                    <i class="fa-solid fa-plus text text-primary"></i>
+                </button>
+            </div>
+            {{ projects.management_form }}
+            {% for form in projects %}
+                {{form}}
+            {% endfor %}
         </div>
-        {{ projects.managment_form}}
-        {% for form in projects %}
-            {{form}}
-        {% endfor %}
         <hr class="mt-3">
     </div>
 
-    <div id="socials-form">
-        <div class="d-flex justify-content-between">
-            <h2>Add Socials</h2>
-            <button type="submit" id='add-socials' onclick="" style="background:none; border:none; cursor:pointer;" >
-                <i class="fa-solid fa-plus text text-primary"></i>
-            </button>
+    <div id="socials-formset">
+        <div class="social-form">
+            <div class="d-flex justify-content-between">
+                <h2>Add Socials</h2>
+                <button type="button" id='add-socials' onclick="add_social()" style="background:none; border:none; cursor:pointer;" >
+                    <i class="fa-solid fa-plus text text-primary"></i>
+                </button>
+            </div>
+            {{ socials.management_form }}
+            {% for form in socials %}
+                {{form}}
+            {% endfor %}
         </div>
-        {{ socials.managment_form}}
-        {% for form in socials %}
-            {{form}}
-        {% endfor %}
         <hr class="mt-3">
     </div>
     <button type="submit" class="btn btn-success">Save</button>
 </form>
 
 
+{# Hidden empty form template #}
+<div id="empty-skill-form" class="hidden">
+    {{ skills.empty_form.as_p|safe }}
+</div>
+<div id="empty-project-form" class="hidden">
+    {{ projects.empty_form.as_p|safe }}
+</div>
+<div id="empty-social-form" class="hidden">
+    {{ socials.empty_form.as_p|safe }}
+</div>
 
 
 {# js for this page #}
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        
-        // Getting All Buttons
-        const skill_add = document.getElementById("add-skill")
-        const project_add = document.getElementById("add-project")
-        const social_add = document.getElementById("add-socials")
 
         // Getting All Form-divs
-        const skill_div = document.getElementById("skill-form")
-        const project_div = document.getElementById("project-form")
-        const social_div = document.getElementById("social-form")
+        const skill_div = document.getElementById("skills-formset")
+        const project_div = document.getElementById("projects-formset")
+        const social_div = document.getElementById("socials-formset")
 
         // Getting Total Forms
-        const skill_tf = skill_div.querySelector("input$[name="-TOTAL_FORMS"]")
-        const project_tf = project_div.querySelector("input$[name="-TOTAL_FORMS"]")
-        const social_tf = social_div.querySelector("input$[name="-TOTAL_FORMS"]")
+        const skill_tf = document.getElementById("id_skills-TOTAL_FORMS")
+        const project_tf = document.getElementById('id_projects-TOTAL_FORMS')
+        const social_tf = document.getElementById('id_socials-TOTAL_FORMS')
+        
+        // Button OnClick Functions
+        window.add_skill = function () {
+            const formCount = parseInt(skill_tf.value)
+            const newFormHtml = document.getElementById("empty-skill-form").innerHTML.replace(/__prefix__/g, formCount)
+            const newDiv = document.createElement("div")
+            newDiv.classList.add("skill-form", "mb-2")
+            newDiv.innerHTML = newFormHtml
+            skill_div.appendChild(newDiv)
+            skill_div.value = formCount + 1
+        }
 
-        alert(skill_tf)
+        window.add_project = function () {
+            const formCount = parseInt(project_tf.value);
+            const newFormHtml = document.getElementById("empty-project-form").innerHTML.replace(/__prefix__/g, formCount);
+            const newDiv = document.createElement("div");
+            newDiv.classList.add("project-form", "mb-2");
+            newDiv.innerHTML = newFormHtml;
+            project_div.appendChild(newDiv);
+            project_tf.value = formCount + 1;
+        };
+
+        window.add_social = function () {
+            const formCount = parseInt(social_tf.value);
+            const newFormHtml = document.getElementById("empty-social-form").innerHTML.replace(/__prefix__/g, formCount);
+            const newDiv = document.createElement("div");
+            newDiv.classList.add("social-form", "mb-2");
+            newDiv.innerHTML = newFormHtml;
+            social_div.appendChild(newDiv);
+            social_tf.value = formCount + 1;
+        };
+
+        
     })
 </script>
+
+
 
 {% endblock content %}

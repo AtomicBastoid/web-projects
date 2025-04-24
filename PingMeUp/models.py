@@ -25,7 +25,6 @@ class Social(models.Model):
 class Project(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="projects")
     title = models.CharField(max_length=50, help_text="Give your project a name...")
-    description = models.TextField(blank=True)
-    link = models.URLField()
+    description = models.TextField(blank=False)
+    link = models.URLField(blank=True)
     image = models.ImageField(upload_to="media/PingMeUp/projects/", blank=True, null=True)
-    created_at = models.DateField()

@@ -15,6 +15,6 @@ class ProfileForm(ModelForm):
             "theme" : "Theme"
         }
 
-ProjectFormSet = inlineformset_factory(Profile, Project, fields=['title', 'description'], extra=1, can_delete=True)
-SkillFormSet = inlineformset_factory(Profile, Skill, fields=['name', 'level'], extra=1, can_delete=True)
-SocialFormSet = inlineformset_factory(Profile, Social, fields=['platform', "url"], extra=1, can_delete=True)
+ProjectFormSet = inlineformset_factory(Profile, Project, fields=['title', 'description', "link", "image"], extra=0, can_delete=True)
+SkillFormSet = inlineformset_factory(Profile, Skill, fields=['name', 'level'], extra=0, can_delete=True)
+SocialFormSet = inlineformset_factory(Profile, Social, fields=['platform', "url"], extra=0, can_delete=True) 
