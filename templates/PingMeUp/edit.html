@@ -93,16 +93,22 @@
           </div>
         </div>
 
-        <div id="skills-formset">
-          {{ skills.management_form }}
-          <div class="skill-form mb-2">
+        <div id="skills-formset" class="accordion pt-2">
+            {{ skills.management_form }}
             {% for skill in skills %}
-              {{skill|crispy}}
-              {% if forloop.counter|divisibleby:"1" %}
-              <hr>
-              {% endif %}
+              <div class="accordion-item">
+                <h2 class="accordion-header text-dark">
+                  <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#skills{{forloop.counter}}" aria-expanded="false" aria-controls="skills{{forloop.counter}}">
+                    {{skill.name.value}}
+                  </button>
+                </h2>
+                <div id="skills{{forloop.counter}}" class="accordion-collapse collapse" data-bs-parent="#skills-formset">
+                  <div class="accordion-body">
+                    {{skill|crispy}}
+                  </div>
+                </div>
+              </div>
             {% endfor %}
-          </div>
         </div>
         
       </form>
@@ -164,7 +170,16 @@
 
 {# Hidden empty form template #}
 <div id="empty-skill-form" class="hidden">
-  {{ skills.empty_form|crispy }}
+    <h2 class="accordion-header">
+      <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#skills{{forloop.counter}}" aria-expanded="false" aria-controls="skills{{forloop.counter}}">
+        New Skill
+      </button>
+    </h2>
+    <div id="skills{{forloop.counter}}" class="accordion-collapse collapse" data-bs-parent="#skills-formset">
+      <div class="accordion-body">
+        {{skills.empty_form|crispy}}
+      </div>
+    </div>
 </div>
 <div id="empty-project-form" class="hidden">
   {{ projects.empty_form|crispy }}
@@ -209,12 +224,19 @@
     // Button OnClick Functions
     window.add_skill = function () {
       const formCount = parseInt(skill_tf.value)
-      const newFormHtml = document.getElementById("empty-skill-form").innerHTML.replace(/__prefix__/g, formCount)
+      const newForm = document.getElementById("empty-skill-form")
+      const btn = newForm.getElementsByTagName('button')[0]
+      btn.setAttribute('data-bs-target', `#skills${formCount + 1}`)
+      btn.setAttribute('aria-controls', `skills${formCount + 1}`)
+      const div = newForm.getElementsByClassName("accordion-collapse")[0]
+      div.setAttribute('id', `skills${formCount + 1}`)
       const newDiv = document.createElement("div")
-      newDiv.classList.add("skill-form", "mb-2")
+      const newFormHtml = newForm.innerHTML.replace(/__prefix__/g, formCount)
+      newDiv.classList.add("accordion-item")
       newDiv.innerHTML = newFormHtml
       skill_div.appendChild(newDiv)
       skill_tf.value = formCount + 1
+
     }
 
     window.add_project = function () {
