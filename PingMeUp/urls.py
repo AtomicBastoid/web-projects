@@ -13,5 +13,8 @@ urlpatterns = [
     path("ajax/projects/", views.save_projects_ajax, name="ajax_projects"),
     path("ajax/socials/", views.save_socials_ajax, name="ajax_socials"),
 
+    #---------------Profile Views--------------------
+    path("pingmeup/<str:username>/", views.show, name="show_profile"),
+
     path("test", views.test, name="test")
 ]

@@ -85,6 +85,10 @@ def save_socials_ajax(request):
         return JsonResponse({"ok": True, "msg": "Projects Saved"})
     return JsonResponse({"ok": False, "errors": fs.errors}, status=400)
 
+# ---------------------Show View-----------------------
+def show(request, username):
+    return HttpResponse(f"This is profile page for {username}")
+
 @login_required
 def test(request):
     return render(request, "PingMeUp/test.html", {
