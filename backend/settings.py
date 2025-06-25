@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'registration.apps.RegistrationConfig',
     'QRCode.apps.QrcodeConfig',
     'crispy_forms',
@@ -124,8 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
@@ -148,7 +150,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'keshwanieishal001@gmail.com'  # Your email
 EMAIL_HOST_PASSWORD = 'admin'  # Use an App Password (not your main password)
-DEFAULT_FROM_EMAIL = 'keshwanieishal001@gmail.com'  # Default "from" address
+DEFAULT_FROM_EMAIL = 'atomic@gmail.com'  # Default "from" address
 
 # User Settings
 """

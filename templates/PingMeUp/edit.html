@@ -129,10 +129,10 @@
           {{ projects.management_form }}
           <div class="project-form mb-2">
             {% for project in projects %}
-            {{project|crispy}}
-            {% if forloop.counter|divisibleby:"1" %}
-              <hr>
-            {% endif %}
+              {{ project|crispy }} 
+              {% if forloop.counter|divisibleby:"1" %}
+                <hr>
+              {% endif %}
             {% endfor %}
           </div>
         </div>
@@ -279,11 +279,14 @@
         const r = await fetch(url, {
           method: "POST",
           body: data,
-          headers: {"X-CSRFToken": csrftoken}
+          headers: {
+            "X-CSRFToken": csrftoken,
+          }
         })
         const json = await r.json()
         if (json.ok) {
           toast(json.msg || "Saved!")
+          //form.reset()
         } else {
           showError(form, json.errors)
         }

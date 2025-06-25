@@ -27,4 +27,4 @@ class Project(models.Model):
     title = models.CharField(max_length=50, help_text="Give your project a name...")
     description = models.TextField(blank=False)
     link = models.URLField(blank=True)
-    image = models.ImageField(upload_to="media/PingMeUp/projects/", blank=True, null=True)
+    image = models.ImageField(upload_to="PingMeUp/projects/", blank=True, null=True)

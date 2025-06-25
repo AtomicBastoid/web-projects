@@ -7,3 +7,4 @@ yt_dlp
 date
 django-widget-tweaks
 django-extensions
+djangorestframework

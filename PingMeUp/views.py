@@ -70,7 +70,7 @@ def save_skills_ajax(request):
 @login_required
 @require_POST
 def save_projects_ajax(request):
-    fs = ProjectFormSet(request.POST, instance=get_or_create_profile(request.user), prefix="projects")
+    fs = ProjectFormSet(request.POST, request.FILES, instance=get_or_create_profile(request.user), prefix="projects")
     if fs.is_valid():
         fs.save()
         return JsonResponse({"ok": True, "msg": "Projects Saved"})
@@ -87,7 +87,19 @@ def save_socials_ajax(request):
 
 # ---------------------Show View-----------------------
 def show(request, username):
-    return HttpResponse(f"This is profile page for {username}")
+    try:
+        user = User.objects.get(username=username)
+        user_profile = user.profile
+        is_owner = request.user == user
+    except User.DoesNotExist:
+        return HttpResponse("User Doesn't Exist!")
+    except Profile.DoesNotExist:
+        return HttpResponse("Profile not found for this user!")
+    return render(request, "PingMeUp/show.html", {
+        "user" : user,
+        "user_profile" : user_profile,
+        "is_owner" : is_owner
+    })
 
 @login_required
 def test(request):
